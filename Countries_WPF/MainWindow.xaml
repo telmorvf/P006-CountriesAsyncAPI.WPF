@@ -1,0 +1,582 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Countries_WPF"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:Kanban="clr-namespace:Syncfusion.UI.Xaml.Kanban;assembly=Syncfusion.SfKanban.WPF"
+    x:Class="Countries_WPF.MainWindow"
+    mc:Ignorable="d"
+    Title="Countries API &amp; SQLite"
+    Height="660"
+    Width="800"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    Icon="/Portugal.png">
+
+    <Window.Resources>
+
+        <Style
+            TargetType="{x:Type Label}"
+            x:Key="label_grey">
+            <Setter
+                Property="Height"
+                Value="25" />
+            <Setter
+                Property="Background"
+                Value="#E0E1DD" />
+        </Style>
+
+        <DataTemplate
+            x:Key="comboTemplate">
+            <WrapPanel>
+                <Image
+                    Width="40"
+                    Height="25"
+                    Stretch="Fill"
+                    Source="{Binding Bandeira}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,15,0" />
+
+                <Label
+                    Content="{Binding Name}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontSize="14" />
+            </WrapPanel>
+
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid
+        Margin="0,0,0,0">
+        <Grid.Style>
+            <Style />
+        </Grid.Style>
+        <Grid.Background>
+            <LinearGradientBrush
+                EndPoint="0.5,1"
+                StartPoint="0.5,0">
+                <GradientStop
+                    Color="#FF778DAB" />
+                <GradientStop
+                    Color="White"
+                    Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="20" />
+            <RowDefinition
+                Height="230" />
+            <RowDefinition
+                Height="300*" />
+            <RowDefinition
+                Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="20" />
+            <ColumnDefinition
+                Width="100" />
+            <ColumnDefinition
+                Width="350" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            Grid.Row="2"
+            Width="100"
+            Grid.Column="1"
+            Height="358"
+            VerticalAlignment="Top">
+            <Label
+                x:Name="lbl_flag"
+                Content="Flag Image:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Country Name:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,131,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Capital Name:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,11,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Region:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,11,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Sub-Region:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,11,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Population:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,9,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="Gini Index:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,10,0,0"
+                HorizontalContentAlignment="Right" />
+        </StackPanel>
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            Height="361"
+            Grid.Row="2"
+            VerticalAlignment="Top"
+            Width="350"
+            Grid.Column="2">
+            <Image
+                x:Name="image_flag1"
+                Height="131"
+                Width="234"
+                Margin="0,10,0,0" />
+            <Label
+                x:Name="lbl_name"
+                Style="{StaticResource label_grey}"
+                Content=""
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                Margin="0,15,0,0"
+                SnapsToDevicePixels="True"
+                FontSize="12" />
+            <Label
+                x:Name="lbl_capitalName"
+                Style="{StaticResource label_grey}"
+                Content=""
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                Margin="0,9,0,0"
+                SnapsToDevicePixels="True"
+                FontSize="12" />
+            <Label
+                x:Name="lbl_region"
+                Style="{StaticResource label_grey}"
+                Content=""
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                SnapsToDevicePixels="True"
+                Margin="0,09,0,0"
+                FontSize="12" />
+            <Label
+                x:Name="lbl_subRegion"
+                Style="{StaticResource label_grey}"
+                Content=""
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                Margin="0,9,0,0"
+                SnapsToDevicePixels="True"
+                FontSize="12" />
+            <Label
+                x:Name="lbl_population"
+                Content=""
+                Style="{StaticResource label_grey}"
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                SnapsToDevicePixels="True"
+                Margin="0,9,0,0"
+                FontSize="12" />
+            <Label
+                x:Name="lbl_gini"
+                Style="{StaticResource label_grey}"
+                Content=""
+                FontFamily="Arial"
+                Foreground="black"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,1"
+                SnapsToDevicePixels="True"
+                Margin="0,9,0,0"
+                FontSize="12" />
+        </StackPanel>
+        <StackPanel
+            HorizontalAlignment="Center"
+            Height="220"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Width="100"
+            Grid.Column="1">
+            <Label
+                Content="Select Country:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,10,0,0" />
+            <Label
+                Content=""
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,40,0,0"
+                HorizontalContentAlignment="Right" />
+            <Label
+                Content="End Time:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,3,0,0"
+                HorizontalContentAlignment="Right"
+                HorizontalAlignment="Left"
+                Width="100" />
+            <Label
+                Content="Message:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,5,0,0"
+                HorizontalContentAlignment="Right"
+                Width="100" />
+            <Label
+                x:Name="lbl_progress"
+                Content="Progress:"
+                FontFamily="Arial"
+                Foreground="#273654"
+                FontWeight="Bold"
+                Margin="0,30,0,0"
+                HorizontalContentAlignment="Right"
+                Width="100" />
+        </StackPanel>
+        <StackPanel
+            HorizontalAlignment="Center"
+            Height="220"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Width="350"
+            Grid.Column="2">
+
+
+
+            <ComboBox
+                x:Name="cb_country"
+                ItemTemplate="{StaticResource comboTemplate}"
+                Width="350"
+                Height="35"
+                Margin="0,5,0,0"
+                SelectionChanged="cb_country_SelectionChanged"
+                RenderTransformOrigin="0.503,0.679"
+                IsEnabled="False"
+                Background="#E0E1DD" />
+
+            <Label
+                x:Name="lbl_result"
+                Style="{StaticResource label_grey}"
+                Content=""
+                Width="350"
+                FontSize="12"
+                FontFamily="Arial"
+                Foreground="black"
+                Visibility="Hidden"
+                Margin="0,30,0,0" />
+            <Label
+                x:Name="lbl_status"
+                Style="{StaticResource label_grey}"
+                Content=""
+                Margin="0,4,0,0"
+                FontSize="12"
+                FontFamily="Arial"
+                Foreground="black"
+                Width="350" />
+            <Label
+                x:Name="lbl_message"
+                Style="{StaticResource label_grey}"
+                Content=""
+                Margin="0,4,0,0"
+                FontSize="12"
+                FontFamily="Arial"
+                Foreground="black"
+                Width="350" />
+        </StackPanel>
+
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            Grid.Row="1"
+            Width="350"
+            Grid.Column="2"
+            Margin="0,0,0,40"
+            Height="25"
+            VerticalAlignment="Bottom">
+            <StackPanel.Effect>
+                <DropShadowEffect />
+            </StackPanel.Effect>
+        </StackPanel>
+
+        <syncfusion:SfCircularProgressBar
+            x:Name="pb_ProgressBar_Flags1"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            Height="171"
+            Margin="0,166,0,0"
+            Grid.Row="2"
+            VerticalAlignment="Top"
+            Width="154"
+            Cursor=""
+            RenderTransformOrigin="0.504,0.563"
+            Visibility="Hidden">
+            <syncfusion:SfCircularProgressBar.Effect>
+                <DropShadowEffect />
+            </syncfusion:SfCircularProgressBar.Effect>
+        </syncfusion:SfCircularProgressBar>
+
+        <syncfusion:SfLinearProgressBar
+            x:Name="pb_ProgressBar_Flags2"
+            Grid.Column="2"
+            HorizontalAlignment="Left"
+            Height="25"
+            Margin="0,180,0,0"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Width="350"
+            Visibility="Hidden">
+            <syncfusion:SfLinearProgressBar.Effect>
+                <syncfusion:DisableEffect />
+            </syncfusion:SfLinearProgressBar.Effect>
+        </syncfusion:SfLinearProgressBar>
+        <Button
+            x:Name="btn_OnOffline"
+            Content="Go Off-line"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontFamily="Century Gothic"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="White"
+            Margin="108,19,0,0"
+            Grid.Column="3"
+            Grid.Row="2"
+            Width="150"
+            Click="btn_OnOffline_Click"
+            Visibility="Hidden">
+
+            <Button.Style>
+                <Style
+                    TargetType="{x:Type Button}">
+                    <Setter
+                        Property="Background"
+                        Value="#415A77" />
+                    <Setter
+                        Property="Cursor"
+                        Value="Hand" />
+                    <Style.Triggers>
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="True">
+                            <Setter
+                                Property="Background"
+                                Value="#768CA8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Button.Template>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        Width="130"
+                        Height="32"
+                        CornerRadius="12"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button
+            x:Name="btn_Exit"
+            Content="Exit"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontFamily="Century Gothic"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="White"
+            Margin="108,315,0,0"
+            Grid.Column="3"
+            Grid.Row="2"
+            Width="150"
+            Click="btn_Exit_Click_1">
+
+            <Button.Style>
+                <Style
+                    TargetType="{x:Type Button}">
+                    <Setter
+                        Property="Background"
+                        Value="#415A77" />
+                    <Setter
+                        Property="Cursor"
+                        Value="Hand" />
+                    <Style.Triggers>
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="True">
+                            <Setter
+                                Property="Background"
+                                Value="#768CA8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Button.Template>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        Width="130"
+                        Height="32"
+                        CornerRadius="12"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button
+            x:Name="btn_GetDataManul"
+            Content="Get Data"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontFamily="Century Gothic"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="White"
+            Margin="108,72,0,0"
+            Grid.Column="3"
+            Grid.Row="2"
+            Width="150"
+            Click="btn_GetDataManul_Click"
+            Visibility="Hidden">
+
+            <Button.Style>
+                <Style
+                    TargetType="{x:Type Button}">
+                    <Setter
+                        Property="Background"
+                        Value="#415A77" />
+                    <Setter
+                        Property="Cursor"
+                        Value="Hand" />
+                    <Style.Triggers>
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="True">
+                            <Setter
+                                Property="Background"
+                                Value="#768CA8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Button.Template>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        Width="130"
+                        Height="32"
+                        CornerRadius="12"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <syncfusion:Clock
+            Grid.Column="3"
+            HorizontalAlignment="Left"
+            Margin="67,10,0,0"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            AMPMSelectorPosition="Top"
+            AMPMSelectorBorderBrush="#FF8CAADE"
+            Background="Black"
+            Opacity="0.85"
+            FontWeight="Bold"
+            AMPMMouseOverButtonsBackground="{x:Null}">
+            <syncfusion:Clock.Effect>
+                <DropShadowEffect />
+            </syncfusion:Clock.Effect>
+        </syncfusion:Clock>
+        <Label
+            x:Name="lbl_progressBar1"
+            Content=""
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            Margin="0,181,0,0"
+            Grid.Row="1"
+            FontFamily="Arial"
+            Foreground="#273654"
+            FontWeight="Bold"
+            VerticalAlignment="Top"
+            Width="42" />
+        <syncfusion:SfBusyIndicator
+            x:Name="loader1"
+            Content=""
+            Grid.Column="2"
+            Header="Loading..."
+            HorizontalAlignment="Left"
+            Height="34"
+            Margin="34,13,0,0"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Width="246"
+            AnimationType="HorizontalPulsingBox"
+            ViewboxHeight="40"
+            ViewboxWidth="40"
+            Foreground="#FF4086A2">
+            <syncfusion:SfBusyIndicator.Effect>
+                <DropShadowEffect />
+            </syncfusion:SfBusyIndicator.Effect>
+        </syncfusion:SfBusyIndicator>
+
+
+    </Grid>
+</Window>
