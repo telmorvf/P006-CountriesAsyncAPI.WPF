@@ -19,16 +19,17 @@ namespace Countries_WPF.Services
         {
             try
             {
-                var client = new HttpClient(); //http para fazer uma ligação externa
+                //http para fazer uma ligação externa
+                var client = new HttpClient();
 
                 // Endereço Base onde está a API
                 client.BaseAddress = new Uri(urlBase);
 
-                //uma tarefa assincroa
-                var response = await client.GetAsync(controller);//Onde está o controlador API
+                //Onde está o controlador API
+                var response = await client.GetAsync(controller);
 
-                //carrego os dados que vem de cima, numa string result
-                var result = await response.Content.ReadAsStringAsync(); //Recebo o Json
+                //carrego os dados, numa string result
+                var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -43,7 +44,7 @@ namespace Countries_WPF.Services
 
                 return new Response
                 {
-                    IsSuccess = true, //Originak = true
+                    IsSuccess = true,
                     //o meu objeto Result vai receber a Lista do Janson acima
                     Result = countries
                 };
@@ -56,8 +57,6 @@ namespace Countries_WPF.Services
                     Message = ex.Message
                 };
             }
-
-
 
         }
 

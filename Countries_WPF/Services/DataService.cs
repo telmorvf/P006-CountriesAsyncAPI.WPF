@@ -9,16 +9,11 @@ namespace Countries_WPF.Services
 {
     public class DataService
     {
+        private SQLiteConnection connection;
 
-        #region Atributos  
-        
-            private SQLiteConnection connection;
+        private SQLiteCommand command;
 
-            private SQLiteCommand command;
-
-            private DialogService dialogService;
-
-        #endregion Atributos
+        private DialogService dialogService;
 
         /// <summary>
         /// Construtor - it's needed to create the database anda table
@@ -82,7 +77,6 @@ namespace Countries_WPF.Services
             connection.Close();
         }
 
-
         /// <summary>
         /// After Receive data from API - Load Data From List and send to SQLite Database 
         /// </summary>
@@ -119,8 +113,6 @@ namespace Countries_WPF.Services
             }
         }
 
-
-
         /// <summary>
         /// LOAD LOCAL DATA - If no API Connection, load data from SQLite
         /// </summary>
@@ -128,24 +120,19 @@ namespace Countries_WPF.Services
         public List<Country> GetData(IProgress<int> progress, IProgress<string> bandeiras)
         {
             List<Country> countries = new List<Country>();
-
             try
             {
                 string sql = "select Name, Capital, Region, Subregion, Population, Gini from countries";
 
-                //Open Connection and create the table in SQLiteLoaded at
+                // Open Connection and create the table in SQLiteLoaded at
                 connection.Open();
-
                 command = new SQLiteCommand(sql, connection);
 
-                //Lê cada Registo
                 SQLiteDataReader reader = command.ExecuteReader();
-
                 while (reader.Read())
                 {
                     countries.Add(new Country
                     {
-
                         Name = reader["Name"] != DBNull.Value ? (string)reader["Name"] : null,
                         Capital = reader["Capital"] != DBNull.Value ? (string)reader["Capital"] : null,
 
@@ -155,23 +142,19 @@ namespace Countries_WPF.Services
                         Population = reader["Population"] != DBNull.Value ? (string)reader["Population"].ToString() : null,
                         Gini = reader["Gini"] != DBNull.Value ? (string)reader["Gini"].ToString() : null
                     });
-
                 }
                 connection.Close();
 
                 int n = 1;
                 foreach (var country in countries)
                 {
-
                     Thread.Sleep(45);
                     var percentComplete = (n * 100) / countries.Count;
                     progress.Report(percentComplete);
                     n++;
 
                     bandeiras.Report(country.Bandeira);
-
                 }
-
                 return countries;
             }
             catch (Exception e)

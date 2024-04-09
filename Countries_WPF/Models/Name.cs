@@ -9,13 +9,5 @@
         public string Common { get; set; }
         public string Official { get; set; }
 
-
-
-        //public override string ToString()
-        //{
-        //    return $"{Common}";
-        //}
-
-
     }
 }

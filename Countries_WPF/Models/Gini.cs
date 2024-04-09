@@ -68,7 +68,6 @@ namespace Countries_WPF.Models
         public double? giniYear { get; set; }
 
 
-        
         /// <summary>
         /// If any property of Gini are != null, return the value to the property GiniYear to de Class Country.Gini
         /// </summary>
@@ -77,23 +76,13 @@ namespace Countries_WPF.Models
         {
             foreach (var giniYear in this.GetType().GetProperties())
             {
-                if(giniYear.GetValue(this) != null)
+                if (giniYear.GetValue(this) != null)
                 {
                     return giniYear.GetValue(this).ToString(); // return Gini._Ano do Proprerty giniYear
                 }
-
-                // the return not "not available" comes from the property
-                //else
-                //{
-                //    return "not available1";
-                //}
-
-                
             }
             return "not available1";
-
         }
-
 
     }
 }

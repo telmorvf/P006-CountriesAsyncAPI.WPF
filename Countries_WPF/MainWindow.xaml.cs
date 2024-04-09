@@ -3,12 +3,10 @@ using Countries_WPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -21,26 +19,17 @@ namespace Countries_WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Atributos
-
-        //Declarar
-        private List<Country> countries; //Troquei a propriedade por este atributo
+        private List<Country> countries; // Troquei a propriedade por este atributo
 
         private NetworkService networkService;
 
         private ApiService apiService;
-
-        private DownloadFlag downloadFlag;  //Coloquei no ecrã principal para a IProgress
 
         private DialogService dialogService;
 
         private DataService dataService;
 
         bool _onLine = true;
-
-        #endregion Atributos
-
-
 
         public MainWindow()
         {
@@ -51,11 +40,9 @@ namespace Countries_WPF
             apiService = new ApiService();
             dialogService = new DialogService();
             dataService = new DataService();
-            downloadFlag = new DownloadFlag();
 
             LoadCountries(); //Carregar os Paises
         }
-
 
         /// <summary>
         /// Refresh Progress bar
@@ -70,14 +57,11 @@ namespace Countries_WPF
             if (percentage > 48) (lbl_progressBar1).Foreground = Brushes.White;
         }
 
-
         /// <summary>
         /// Load Countries from API or SQL Lite
         /// </summary>
         private async void LoadCountries()
         {
-            _onLine = false;  // false to try the offline Mode -------------------------------------------------------------------------
-
             //ProgressBars Local 
             //Receive % de conclusão from Async dataService.GetData() OFFLINE
             var progress = new Progress<int>(value =>
@@ -85,10 +69,9 @@ namespace Countries_WPF
                 pb_ProgressBar_Flags1.Progress = value;
                 pb_ProgressBar_Flags2.Progress = value;
                 lbl_progressBar1.Content = $"{value}";
-                if (value > 48)(lbl_progressBar1).Foreground = Brushes.White;
+                if (value > 48) (lbl_progressBar1).Foreground = Brushes.White;
 
             });
-
 
             //Bandeiras Para Offline 
             //Receive bandeiras from Async dataService.GetData() OFFLINE
@@ -103,31 +86,29 @@ namespace Countries_WPF
                 image_flag1.Source = new BitmapImage(resorceURI);
             });
 
-
             //ProgressBars API
             var ProgressReport_Flags = new Progress<int>(ProcessingProgress_Flag);
             var stopwatch = new Stopwatch();
 
-            // Check connection to Internet. If you hane Internet -> IsSuccess=true
+            // Check connection to Internet. If you have Internet -> IsSuccess=true
             var connection = networkService.CheckConnection();
 
-            //Dependendo do estado da conexão
             //Se não há conexão - Carrego os dados Locais
+            _onLine = true;  // false to try the offline Mode <------------------------- IMPORTANT
             double time = 0;
-            if (!connection.IsSuccess || _onLine == false ) // comentado !
+            if (!connection.IsSuccess || _onLine == false)
             {
                 lbl_message.Content = "Downloading Data From Local DB...";
                 ProgressbarVisible(); // ProgressBar Visibility = Visible
 
                 stopwatch.Start();
 
-                // Qual a forma correta de Fazer 1 versão
-                countries = await Task.Run ( () => dataService.GetData(progress, bandeiras)); //Exemplo 1 - como deve ser feito???
+                countries = await Task.Run(() => dataService.GetData(progress, bandeiras));
                 time = stopwatch.ElapsedMilliseconds / 1000.0;
 
                 lbl_status.Content = string.Format($"Offline: Data Loaded From SQLite at {DateTime.Now}.");
                 lbl_message.Content = $"Ready... Loaded {countries.Count()} Countries in {time} seconds.";
-                
+
                 MessageBox.Show($"Download done in {time} seconds.");
 
                 _onLine = false;
@@ -142,7 +123,7 @@ namespace Countries_WPF
                 ProgressbarVisible();  // ProgressBar Visibility = Visible
 
                 lbl_message.Content = "Downloading API Data...";
-                
+
                 stopwatch.Start();
 
                 //Vou ler a API e descarregar para a lista
@@ -152,8 +133,8 @@ namespace Countries_WPF
                 // Qual a forma correta de Fazer 2 versão
                 await DownloadFlags1(ProgressReport_Flags);
 
-                time = stopwatch.ElapsedMilliseconds / 1000.0;               
-                
+                time = stopwatch.ElapsedMilliseconds / 1000.0;
+
                 lbl_status.Content = string.Format($"Load {countries.Count()} Countries from API {DateTime.Now:F}");
                 lbl_message.Content = $"All data are Downloaded in {time} seconds.";
 
@@ -162,7 +143,8 @@ namespace Countries_WPF
             }
             try
             {
-                if (countries.Count == 0 || countries == null || countries?.Any() != true) //Se a Lista não foi carregada vinda da API ou Localmente
+                //Se a Lista não foi carregada vinda da API ou Localmente
+                if (countries.Count == 0 || countries == null || countries?.Any() != true)
                 {
                     lbl_result.Content = "No Internet Connection" + Environment.NewLine +
                         "and the countries were not previously loaded." + Environment.NewLine +
@@ -196,9 +178,6 @@ namespace Countries_WPF
         {
             lbl_message.Content = "Downloading Data From API...";
             int taskResoved = 0;
-
-            //TO DO - Move Download Flags to the DataService Class
-            //await downloadFlag.GetFlags(countries);
 
             await Task.Run(() =>
             {
@@ -245,15 +224,14 @@ namespace Countries_WPF
                             }
                         }
                     }
-            }
+                }
                 catch (Exception ex)
-            {
-                dialogService.ShowMessage("Error downloading flags", ex.Message);
-            }
-        });         
+                {
+                    dialogService.ShowMessage("Error downloading flags", ex.Message);
+                }
+            });
             image_flag1.Source = null;
         }
-
 
         /// <summary>
         /// When I Change Country in ComboBox
@@ -274,16 +252,15 @@ namespace Countries_WPF
 
             lbl_population.Content = String.Format("{0:n0}", Convert.ToUInt32(country.Population));
 
-            //lbl_gini.Content = country.Gini + " %";
-            lbl_gini.Content = country.Gini == "not available" ? "not available" : country.Gini+" %";
+            // lbl_gini.Content = country.Gini + " %";
+            lbl_gini.Content = country.Gini == "not available" ? "not available" : country.Gini + " %";
 
-            //Show the Flags From Propertie 
+            // Show the Flags From Propertie 
             Uri resorceURI = null;
             string teste1 = country.Bandeira;
             resorceURI = new Uri(teste1);
             image_flag1.Source = new BitmapImage(resorceURI);
         }
-
 
         /// <summary>
         /// Async carrega dados da API para a List Countries da classe Country
@@ -295,14 +272,13 @@ namespace Countries_WPF
 
             countries = (List<Country>)response.Result; //Coloca os dados da API na Lista Country da Classe Country
 
-            //SQLite
-            //Se há ligação à net, vou refrescar o SQLite com os dados da API          
+            // SQLite
+            // Se há ligação à net, vou refrescar o SQLite com os dados da API          
             dataService.DeleteData();           // delete rates from SQLite
             dataService.SaveData(countries);    //passa valores da Lista countries da classe Country para o SQLite
-       
+
             lbl_result.Content = "Países Atualizados...";
         }
-
 
         /// <summary>
         /// EXIT BUTTON
@@ -346,8 +322,6 @@ namespace Countries_WPF
             lbl_progressBar1.Visibility = Visibility.Visible;
             loader1.Visibility = Visibility.Visible;
         }
-
-
 
         ///// <summary>
         ///// INOPERATIONAL -> Offline Button

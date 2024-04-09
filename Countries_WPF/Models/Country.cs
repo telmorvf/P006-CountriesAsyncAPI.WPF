@@ -36,7 +36,6 @@ namespace Countries_WPF.Models
             }
         }
 
-
         /// <summary>
         /// Convert te Atribute _name to String before the (get; set; ) in Name Property
         /// And If not Exists send to Interface the value "not available"
@@ -66,7 +65,6 @@ namespace Countries_WPF.Models
                 }
             }
         }
-
 
         /// <summary>
         /// get te Atribute _capital withe index 0. to String Property Capital
@@ -100,23 +98,10 @@ namespace Countries_WPF.Models
             {
                 if (value != null)
                 {
-                    //    if (_capital.Count == 1)
-                    //{
                     _capital = new List<string>();
                     _capital.Add(value);
 
                 }
-                //    }
-                //    else
-                //    {
-                //        _capital[0] = value;
-                //    }
-                //}
-                //else
-                //{
-                //    _capital[0] = value;
-                //}
-
             }
         }
 
@@ -126,7 +111,6 @@ namespace Countries_WPF.Models
         /// </summary>
         [JsonProperty("region")]
         private String _region;
-
         [JsonIgnore]
         public String Region
         {
@@ -147,14 +131,12 @@ namespace Countries_WPF.Models
             }
         }
 
-
         /// <summary>
         /// Get and Set the Atribute _subRegion in Property SubRegion.
         /// And If not Exists send to Interface the value "not available"
         /// </summary>
         [JsonProperty("subregion")]
         private String _subregion;
-
         [JsonIgnore]
         public String Subregion
         {
@@ -175,8 +157,6 @@ namespace Countries_WPF.Models
             }
         }
 
-
-
         /// <summary>
         /// Get and Set the Atribute _population in Property Population.
         /// Convert to String before send the property to the interface
@@ -184,7 +164,6 @@ namespace Countries_WPF.Models
         /// </summary>
         [JsonProperty("population")]
         private double? _population;
-
         /// <summary>
         /// Poputation have 0's but no Nulls
         /// </summary>
@@ -215,7 +194,6 @@ namespace Countries_WPF.Models
         /// </summary>
         [JsonProperty("gini")]
         private Gini _gini;
-
         // public Gini Gini { get; set; }
         [JsonIgnore]
         public String Gini
